@@ -20,32 +20,21 @@ def write_responses(result):
 def process_queries(queries):
     result = []
     # Keep list of all existing (i.e. not deleted yet) contacts.
+    # Instead of array use Dictionary https://docs.python.org/3/tutorial/datastructures.html#dictionaries
     contacts = {}
     for cur_query in queries:
         if cur_query.type == 'add':
-            # if we already have contact with such number,
-            # we should rewrite contact's name
-            # for contact in contacts:
-            #     if contact.number == cur_query.number:
-            #         contact.name = cur_query.name
-            #         break
-            # else: # otherwise, just add it
-            #     contacts.append(cur_query)
-            # if not cur_query.number in contacts:
+            # Add key value or replace existing value
             contacts[cur_query.number] = cur_query.name
         elif cur_query.type == 'del':
+            # if key exists delete it
             if cur_query.number in contacts:
                 del contacts[cur_query.number]
-            # for j in range(len(contacts)):
-            #     if contacts[j].number == cur_query.number:
-            #         contacts.pop(j)
-            #         break
         else:
             response = 'not found'
-            for number in contacts.keys():
-                if number == cur_query.number:
-                    response = contacts[number]
-                    break
+            # If key exists use value as response
+            if cur_query.number in contacts:
+                response = contacts[cur_query.number]
             result.append(response)
     return result
 
